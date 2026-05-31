@@ -2,111 +2,10 @@
 
 API REST para gerenciamento de contas e transações bancárias, construída com **FastAPI + SQLAlchemy + Docker**, com deploy na **AWS Lambda via AWS CLI**.
 
----
+![arquitetura](docs/images/projeto.png)
 
-## 🏗️ Arquitetura Geral
 
-```mermaid
-graph TB
-    Client["👤 Cliente\n(Postman / Frontend)"]
-    
-    subgraph AWS["☁️ AWS Cloud"]
-        APIGW["API Gateway\n(HTTP API)"]
-        Lambda["AWS Lambda\nFinancial API"]
-        RDS["Amazon RDS\nPostgreSQL"]
-    end
-
-    Client -->|HTTPS| APIGW
-    APIGW -->|Proxy| Lambda
-    Lambda -->|SQLAlchemy| RDS
-
-    style AWS fill:#f0f7ff,stroke:#0066cc
-    style Lambda fill:#ff9900,color:#fff
-    style APIGW fill:#8c4fff,color:#fff
-    style RDS fill:#2e73b8,color:#fff
-```
-
----
-
-## 📦 Estrutura do Projeto
-
-```mermaid
-graph LR
-    Root["financial-api/"]
-    App["app/"]
-    Routers["routers/\n accounts.py\n transactions.py"]
-    Models["models/\n models.py"]
-    Schemas["schemas/\n schemas.py"]
-    Tests["tests/\n test_api.py"]
-    DB["database.py"]
-    Main["main.py"]
-    Docker["Dockerfile\ndocker-compose.yml"]
-    Req["requirements.txt"]
-
-    Root --> App
-    Root --> Docker
-    Root --> Req
-    App --> Routers
-    App --> Models
-    App --> Schemas
-    App --> Tests
-    App --> DB
-    App --> Main
-```
-
----
-
-## 🔄 Fluxo de uma Transação
-
-```mermaid
-sequenceDiagram
-    participant C as Cliente
-    participant API as FastAPI
-    participant DB as Banco de Dados
-
-    C->>API: POST /transactions/
-    API->>DB: Busca conta pelo account_id
-    DB-->>API: Retorna conta
-    
-    alt Saldo insuficiente (débito)
-        API-->>C: 400 Saldo insuficiente
-    else Transação válida
-        API->>DB: Insere transação
-        API->>DB: Atualiza saldo da conta
-        DB-->>API: Confirma
-        API-->>C: 201 Transação criada
-    end
-```
-
----
-
-## 📊 Modelo de Dados
-
-```mermaid
-erDiagram
-    ACCOUNTS {
-        string id PK
-        string owner_name
-        string document UK
-        float balance
-        datetime created_at
-    }
-
-    TRANSACTIONS {
-        string id PK
-        string account_id FK
-        enum type
-        float amount
-        string description
-        datetime created_at
-    }
-
-    ACCOUNTS ||--o{ TRANSACTIONS : "possui"
-```
-
----
-
-## 🚀 Rodando Localmente
+## 🚀 Executando Localmente
 
 ### Com Docker Compose (recomendado)
 ```bash
@@ -121,11 +20,10 @@ uvicorn app.main:app --reload
 
 Acesse a documentação Swagger em: **http://localhost:8000/docs**
 
-![Financial-API-Swagger-UI](https://i.postimg.cc/D04GSNYt/Financial-API-Swagger-UI-1.png)
+![Financial-API-Swagger-UI](docs/images/documentação_swagger.png)
 
----
 
-## 🧪 Rodando os Testes
+## 🧪 Executando os Testes
 
 ```bash
 pytest app/tests/test_api.py -v
@@ -143,8 +41,6 @@ PASSED test_create_debit_transaction
 PASSED test_debit_insufficient_balance
 PASSED test_get_statement
 ```
-
----
 
 ## ☁️ Deploy na AWS com AWS CLI
 
@@ -228,8 +124,6 @@ aws lambda update-function-code \
   --zip-file fileb://financial-api.zip
 ```
 
----
-
 ## 📡 Endpoints
 
 | Método | Endpoint | Descrição |
@@ -242,7 +136,6 @@ aws lambda update-function-code \
 | POST | `/transactions/` | Registrar transação |
 | GET | `/transactions/statement/{id}` | Extrato com saldo diário |
 
----
 
 ## 🧠 Decisões Técnicas
 
@@ -255,7 +148,6 @@ ORM maduro, suporta múltiplos bancos (SQLite local → PostgreSQL em produção
 **Query de saldo diário:**
 A query do endpoint `/statement` usa agregação por `DATE(created_at)` com CASE WHEN para separar créditos e débitos - evitando full scan com filtros de data e sem rodar direto em produção (ideal via réplica de leitura no RDS).
 
----
 
 ## 👨‍💻 Autor
 
