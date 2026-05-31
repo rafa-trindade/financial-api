@@ -137,6 +137,11 @@ aws lambda update-function-code \
 | GET | `/transactions/statement/{id}` | Extrato com saldo diário |
 
 
+## ⚙️ Stack Utilizada
+
+![Financial-API-Swagger-UI](docs/images/stack.png)
+
+
 ## 🧠 Decisões Técnicas
 
 **Por que FastAPI?**
