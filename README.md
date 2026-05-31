@@ -121,6 +121,8 @@ uvicorn app.main:app --reload
 
 Acesse a documentação Swagger em: **http://localhost:8000/docs**
 
+[Financial-API-Swagger-UI](https://i.postimg.cc/D04GSNYt/Financial-API-Swagger-UI-1.png)
+
 ---
 
 ## 🧪 Rodando os Testes
