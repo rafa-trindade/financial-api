@@ -126,16 +126,7 @@ aws lambda update-function-code \
 
 ## 📡 Endpoints
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/health` | Health check |
-| POST | `/accounts/` | Criar conta |
-| GET | `/accounts/` | Listar contas |
-| GET | `/accounts/{id}` | Buscar conta |
-| DELETE | `/accounts/{id}` | Remover conta |
-| POST | `/transactions/` | Registrar transação |
-| GET | `/transactions/statement/{id}` | Extrato com saldo diário |
-
+![Financial-API-Swagger-UI](docs/images/endpoint.png)
 
 ## ⚙️ Stack Utilizada
 
