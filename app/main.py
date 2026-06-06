@@ -28,5 +28,5 @@ def health_check():
     return {"status": "ok", "service": "financial-api"}
 
 
-from mangum import Mangum
-handler = Mangum(app)
+#from mangum import Mangum
+#handler = Mangum(app)
