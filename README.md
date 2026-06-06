@@ -147,5 +147,5 @@ A query do endpoint `/statement` usa agregação por `DATE(created_at)` com CASE
 
 ## 👨‍💻 Autor
 
-**Rafael Araujo Trindade** - Data Engineer  
+**Rafael Trindade** - Data & Analytics Engineer
 [LinkedIn](https://linkedin.com/in/rafatrindade) · [GitHub](https://github.com/rafa-trindade) · [Medium](https://rafa-trindade.medium.com/)
